@@ -9,8 +9,8 @@
 import UIKit
 
 class CalculateViewController: UIViewController {
-    
-    var bmiValue = "0.0"
+     
+    var calculateBrain = CalculateBrain()
     
     @IBOutlet weak var heightNumberLabel: UILabel!
     
@@ -24,7 +24,6 @@ class CalculateViewController: UIViewController {
     
     @IBAction func heightSliderMoved(_ sender: UISlider) {
         let valueStr = String(format: "%.2f", sender.value)
-        
         heightNumberLabel.text = valueStr + "m"
     }
     
@@ -42,13 +41,8 @@ class CalculateViewController: UIViewController {
     @IBAction func calculatePressed(_ sender: UIButton) {
         let height = heightSliderOutlet.value
         let weight = weightSliderOutlet.value
-        let bmi:Float = Float(weight) / pow(height, 2)
-        print("height: \(heightSliderOutlet.value)")
-        print("weight: \(weightSliderOutlet.value)")
-        print("bmi: \(bmi)")
-        
-        bmiValue = String(format: "%.1f", bmi)
-        
+        calculateBrain.calculateBMI(height, weight)
+         
         //transit from current controller to second controller, just to show how to create
         //        let seondVC = SecondViewController()
         //        seondVC.bmiValue = String(format: "%.1f", bmi)
@@ -62,7 +56,7 @@ class CalculateViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toToResult"{
             let destinationVC = segue.destination as! ResultViewController
-            destinationVC.bmiValue = self.bmiValue
+            destinationVC.bmiStruct =  calculateBrain.getBMIObj()
         }
     }
     
